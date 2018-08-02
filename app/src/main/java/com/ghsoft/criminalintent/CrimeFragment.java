@@ -3,9 +3,12 @@ package com.ghsoft.criminalintent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 /**
  * Created by mac on 2018/8/2.
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 
 public class CrimeFragment extends Fragment {
     private Crime mCrime;
+    private EditText mTitleField;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +38,20 @@ public class CrimeFragment extends Fragment {
         // attachToRoot:告知inflater是否将生成的视图添加给父视图
         // false - 我将以activity代码的方式添加视图
         View view = inflater.inflate(R.layout.fragment_crime, container, false);
+        mTitleField = view.findViewById(R.id.crime_title);
+        mTitleField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // s:用户输入内容,.toString()返回用来设置Crime标题的字符串.
+                mCrime.setTitle(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
         return view;
     }
 }
