@@ -37,7 +37,7 @@ public class CrimeLab {
      * @param id 指定ID
      * @return Crime对象
      */
-    private Crime getCrime(UUID id){
+    public Crime getCrime(UUID id){
         for (Crime crime : mCrimes) {
             if (crime.getId().equals(id)) {
                 return crime;
