@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * Created by mac on 2018/8/5.
  */
@@ -32,6 +34,12 @@ public class CrimeListFragment extends Fragment {
         public CrimeHolder(View itemView) {
             super(itemView);
             mTitleTextView = (TextView) itemView;
+        }
+    }
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
+        private List<Crime> mCrimes;
+        public CrimeAdapter(List<Crime> crimes){
+            mCrimes = crimes;
         }
     }
 }
