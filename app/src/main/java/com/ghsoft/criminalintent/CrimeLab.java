@@ -28,7 +28,7 @@ public class CrimeLab {
             mCrimes.add(crime);
         }
     }
-    private List<Crime> getCrimes(){
+    public List<Crime> getCrimes(){
         return mCrimes;
     }
 
