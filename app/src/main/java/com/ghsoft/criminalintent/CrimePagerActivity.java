@@ -49,5 +49,11 @@ public class CrimePagerActivity extends FragmentActivity {
             }
         });
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_CRIME_ID);
+        for (int i = 0; i < mCrimes.size(); i++) {
+            if (mCrimes.get(i).getId().equals(crimeId)) {
+                // 将crime在crimes集合中的索引值作为当前列表项在viewPager中的位置
+                mViewPager.setCurrentItem(i);
+            }
+        }
     }
 }
