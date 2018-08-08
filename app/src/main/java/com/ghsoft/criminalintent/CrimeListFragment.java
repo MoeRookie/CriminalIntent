@@ -71,14 +71,7 @@ public class CrimeListFragment extends Fragment {
         @Override
         public void onClick(View v) {
             // 启动CrimeActivity实例
-            Intent intent = CrimeActivity.newIntent(getActivity(),mCrime.getId());
-            // 1.获取到crimes
-            List<Crime> crimes = CrimeLab.get(getActivity())
-                    .getCrimes();
-            // 2.获取到当前crime在crimes中的索引值
-            if (crimes.contains(mCrime)) {
-                mPosition = crimes.indexOf(mCrime);
-            }
+            Intent intent = CrimePagerActivity.newIntent(getActivity(),mCrime.getId());
             startActivity(intent);
         }
 
