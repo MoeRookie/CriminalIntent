@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,9 @@ import java.util.List;
  */
 
 public class CrimeListFragment extends Fragment {
-
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
+    private int mPosition = -1;
 
     @Nullable
     @Override
@@ -48,13 +49,12 @@ public class CrimeListFragment extends Fragment {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);
         }else {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.notifyItemChanged(mPosition);
         }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder
     implements View.OnClickListener{
-
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mSolvedCheckBox;
@@ -72,6 +72,13 @@ public class CrimeListFragment extends Fragment {
         public void onClick(View v) {
             // 启动CrimeActivity实例
             Intent intent = CrimeActivity.newIntent(getActivity(),mCrime.getId());
+            // 1.获取到crimes
+            List<Crime> crimes = CrimeLab.get(getActivity())
+                    .getCrimes();
+            // 2.获取到当前crime在crimes中的索引值
+            if (crimes.contains(mCrime)) {
+                mPosition = crimes.indexOf(mCrime);
+            }
             startActivity(intent);
         }
 
