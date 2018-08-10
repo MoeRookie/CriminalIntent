@@ -77,7 +77,7 @@ public class CrimeFragment extends Fragment {
         });
         mDateButton = view.findViewById(R.id.crime_date);
         // 格式化时间戳
-        Date date = mCrime.getDate();
+        final Date date = mCrime.getDate();
         CharSequence currentDate = DateFormat.format("EEEE,MMMMdd,yyyy", date);
         mDateButton.setText(currentDate);
         mDateButton.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,7 @@ public class CrimeFragment extends Fragment {
             public void onClick(View v) {
                 // 显示对话框
                 FragmentManager manager = getFragmentManager();
-                DatePickerFragment dialog = new DatePickerFragment();
+                DatePickerFragment dialog = DatePickerFragment.newInstance(mCrime.getDate());
                 dialog.show(manager,DIALOG_DATE);
             }
         });
