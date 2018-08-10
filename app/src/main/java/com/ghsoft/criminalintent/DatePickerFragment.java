@@ -7,7 +7,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -16,6 +18,7 @@ import java.util.Date;
 
 public class DatePickerFragment extends DialogFragment {
     private static final String ARG_DATE = "date";
+    private DatePicker mDatePicker;
 
     public static DatePickerFragment newInstance(Date date){
         Bundle args = new Bundle();
@@ -29,6 +32,20 @@ public class DatePickerFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_date, null);
+        // 初始化DatePicker
+        // 从当前fragment的args中获取传过来的date
+        Date date = (Date) getArguments().getSerializable(ARG_DATE);
+        // 通过Calendar类加工并从中获取初始化datePicker所需的年、月、日
+        Calendar calendar = Calendar.getInstance();
+        // 将date配置给calendar
+        calendar.setTime(date);
+        // 从calendar中获取初始化datePicker所需的年、月、日
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        mDatePicker = view.findViewById(R.id.dialog_date_date_picker);
+        // 初始化datePicker
+        mDatePicker.init(year,month,day,null);
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.date_picker_title)
