@@ -3,6 +3,7 @@ package com.ghsoft.criminalintent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -27,6 +28,7 @@ public class CrimeFragment extends Fragment {
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
     private static final String AGR_CRIME_ID = "crime_id";
+    private static final String DIALOG_DATE = "DialogDate";
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle bundle = new Bundle();
@@ -78,7 +80,15 @@ public class CrimeFragment extends Fragment {
         Date date = mCrime.getDate();
         CharSequence currentDate = DateFormat.format("EEEE,MMMMdd,yyyy", date);
         mDateButton.setText(currentDate);
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 显示对话框
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager,DIALOG_DATE);
+            }
+        });
         mSolvedCheckBox = view.findViewById(R.id.crime_solved);
         // 设置crime的解决状态
         mSolvedCheckBox.setChecked(mCrime.isSolved());
