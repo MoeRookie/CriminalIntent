@@ -1,6 +1,8 @@
 package com.ghsoft.criminalintent;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +14,7 @@ import android.widget.DatePicker;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by mac on 2018/8/10.
@@ -51,7 +54,20 @@ public class DatePickerFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.date_picker_title)
-                .setPositiveButton(android.R.string.ok,null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 获取用户当前选中日期的信息并封装成date
+                        // 获取用户当前选中日期的信息
+                        int year = mDatePicker.getYear();
+                        int month = mDatePicker.getMonth();
+                        int day = mDatePicker.getDayOfMonth();
+                        // 封装成date
+                        Date date = new GregorianCalendar(year, month, day).getTime();
+                        // 发送结果到crimeFragment中
+                        sendResult(Activity.RESULT_OK,date);
+                    }
+                })
                 .create();
     }
 
