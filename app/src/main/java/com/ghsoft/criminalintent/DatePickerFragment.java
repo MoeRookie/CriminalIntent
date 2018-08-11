@@ -1,6 +1,7 @@
 package com.ghsoft.criminalintent;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -18,6 +19,7 @@ import java.util.Date;
 
 public class DatePickerFragment extends DialogFragment {
     private static final String ARG_DATE = "date";
+    private static final String EXTRA_DATE = "com.ghsoft.criminalintent.date";
     private DatePicker mDatePicker;
 
     public static DatePickerFragment newInstance(Date date){
@@ -51,5 +53,19 @@ public class DatePickerFragment extends DialogFragment {
                 .setTitle(R.string.date_picker_title)
                 .setPositiveButton(android.R.string.ok,null)
                 .create();
+    }
+
+    /**
+     * 发送date给目标fragment - crimeFragment
+     * @param resultCode 结果码
+     * @param date 用户选择的日期
+     */
+    private void sendResult(int resultCode,Date date){
+        if (getTargetFragment() == null) {
+            return;
+        }
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_DATE,date);
+        getTargetFragment().onActivityResult(getTargetRequestCode(),resultCode,intent);
     }
 }
