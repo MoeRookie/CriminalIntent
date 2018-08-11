@@ -81,8 +81,7 @@ public class CrimeFragment extends Fragment {
         mDateButton = view.findViewById(R.id.crime_date);
         // 格式化时间戳
         final Date date = mCrime.getDate();
-        CharSequence currentDate = DateFormat.format("EEEE,MMMMdd,yyyy", date);
-        mDateButton.setText(currentDate);
+        updateDate(date);
         mDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +105,11 @@ public class CrimeFragment extends Fragment {
         return view;
     }
 
+    private void updateDate(Date date) {
+        CharSequence currentDate = DateFormat.format("EEEE,MMMMdd,yyyy", date);
+        mDateButton.setText(currentDate);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK) {
@@ -116,7 +120,7 @@ public class CrimeFragment extends Fragment {
             // 设置crime的记录日期
             mCrime.setDate(date);
             // 刷新日期按钮的显示结果
-            mDateButton.setText(mCrime.getDate().toString());
+            updateDate(date);
         }
     }
 }
