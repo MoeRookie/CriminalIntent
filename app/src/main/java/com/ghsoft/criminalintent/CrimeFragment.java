@@ -1,5 +1,7 @@
 package com.ghsoft.criminalintent;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -102,5 +104,19 @@ public class CrimeFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_DATE) {
+            Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+            // 设置crime的记录日期
+            mCrime.setDate(date);
+            // 刷新日期按钮的显示结果
+            mDateButton.setText(mCrime.getDate().toString());
+        }
     }
 }
