@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -66,6 +67,23 @@ public class CrimeListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater); // 约定:任何超类定义的菜单项在子类方法中同样获得应用
         // 解析菜单定义,将菜单项填充到menu对象中
         inflater.inflate(R.menu.fragment_crime_list,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_new_crime:
+                // 新建crime保存到陋习列表中,并在陋习详情中设置新建crime的属性
+                Crime crime = new Crime();
+                CrimeLab crimeLab = CrimeLab.get(getActivity());
+                crimeLab.addCrime(crime);
+                // 跳转CrimePagerActivity
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
+                startActivity(intent);
+                return true; // 全部任务已完成
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder
