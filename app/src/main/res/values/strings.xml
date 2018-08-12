@@ -7,4 +7,9 @@
     <string name="crime_solved_label">Solved</string>
     <!-- 日期对话框标题 -->
     <string name="date_picker_title">Date of crime.</string>
+    <!-- 菜单及菜单项所需的字符串资源 -->
+    <string name="new_crime">New Crime</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_sub_title">Hide Subtitle</string>
+    <string name="subtitle_format">%1$s crimes</string>
 </resources>
