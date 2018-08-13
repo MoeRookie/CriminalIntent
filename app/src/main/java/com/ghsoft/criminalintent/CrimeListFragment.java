@@ -1,9 +1,11 @@
 package com.ghsoft.criminalintent;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -81,9 +83,30 @@ public class CrimeListFragment extends Fragment {
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true; // 全部任务已完成
+            case R.id.menu_item_show_subtitle:
+                // 更新显示工具栏中的子标题
+                updateSubtitle();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * 更新工具栏中的子标题
+     */
+    private void updateSubtitle(){
+        // 1.获取到crimeLab对象
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        // 2.获取到当前crime的个数
+        int crimeCount = crimeLab.getCrimes().size();
+        // 3.设置工具栏子标题显示当前crime的个数
+        // 3.1.配置crimeCount替换字符串资源中的占位符
+        @SuppressLint("StringFormatMatches")
+        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        // 3.2.显示当前crime的个数子标题
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setSubtitle(subtitle);
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder
