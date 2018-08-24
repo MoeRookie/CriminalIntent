@@ -60,6 +60,7 @@ public class CrimeListFragment extends Fragment {
         }else {
             mAdapter.notifyDataSetChanged();
         }
+        updateSubtitle();
     }
 
     @Override

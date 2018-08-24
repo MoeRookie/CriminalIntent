@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.List;
@@ -56,5 +57,15 @@ public class CrimePagerActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 }
