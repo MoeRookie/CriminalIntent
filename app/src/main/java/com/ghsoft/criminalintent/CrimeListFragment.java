@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
-    private int mPosition = -1;
+    private boolean mSubTitleVisible;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +67,8 @@ public class CrimeListFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater); // 约定:任何超类定义的菜单项在子类方法中同样获得应用
         // 解析菜单定义,将菜单项填充到menu对象中
         inflater.inflate(R.menu.fragment_crime_list,menu);
+        MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
+        subtitleItem.setTitle(mSubTitleVisible ? R.string.hide_subtitle : R.string.show_subtitle);
     }
 
     @Override
@@ -84,6 +84,10 @@ public class CrimeListFragment extends Fragment {
                 startActivity(intent);
                 return true; // 全部任务已完成
             case R.id.menu_item_show_subtitle:
+                // 子标题显示与否的状态值取反
+                mSubTitleVisible = !mSubTitleVisible;
+                // 重建选项菜单
+                getActivity().invalidateOptionsMenu();
                 // 更新显示工具栏中的子标题
                 updateSubtitle();
                 return true;
@@ -104,6 +108,9 @@ public class CrimeListFragment extends Fragment {
         // 3.1.配置crimeCount替换字符串资源中的占位符
         @SuppressLint("StringFormatMatches")
         String subtitle = getString(R.string.subtitle_format, crimeCount);
+        if (!mSubTitleVisible) {
+            subtitle = null;
+        }
         // 3.2.显示当前crime的个数子标题
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.getSupportActionBar().setSubtitle(subtitle);

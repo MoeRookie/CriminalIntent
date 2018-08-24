@@ -10,6 +10,6 @@
     <!-- 菜单及菜单项所需的字符串资源 -->
     <string name="new_crime">New Crime</string>
     <string name="show_subtitle">Show Subtitle</string>
-    <string name="hide_sub_title">Hide Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
     <string name="subtitle_format">%1$s crimes</string>
 </resources>
