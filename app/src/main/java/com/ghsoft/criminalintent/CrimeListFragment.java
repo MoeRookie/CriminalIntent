@@ -110,9 +110,7 @@ public class CrimeListFragment extends Fragment {
         // 2.获取到当前crime的个数
         int crimeCount = crimeLab.getCrimes().size();
         // 3.设置工具栏子标题显示当前crime的个数
-        // 3.1.配置crimeCount替换字符串资源中的占位符
-        @SuppressLint("StringFormatMatches")
-        String subtitle = getString(R.string.subtitle_format, crimeCount);
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plurals, crimeCount,crimeCount);
         if (!mSubTitleVisible) {
             subtitle = null;
         }

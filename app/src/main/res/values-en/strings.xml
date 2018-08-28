@@ -11,11 +11,11 @@
     <string name="new_crime">New Crime</string>
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
+    <!--<string name="subtitle_format">%1$s crimes</string>-->
     <string name="delete_crime">Delete Crime</string>
-    <!-- 量化字符串 - 子标题区分显示crime数量
-         https://blog.csdn.net/teagreen_red/article/details/78269950
-    -->
+    <!-- 量化字符串 - 子标题区分显示crime数量 -->
     <plurals name="subtitle_plurals">
-        <item quantity="other">%1$s 个</item>
+        <item quantity="one">%1$s crime</item>
+        <item quantity="other">%1$s crimes</item>
     </plurals>
 </resources>
