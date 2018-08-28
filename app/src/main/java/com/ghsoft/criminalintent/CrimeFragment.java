@@ -10,6 +10,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +35,7 @@ public class CrimeFragment extends Fragment {
     private static final String AGR_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final int REQUEST_DATE = 0;
+    private CrimeLab mCrimeLab;
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle bundle = new Bundle();
@@ -44,8 +48,10 @@ public class CrimeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         UUID crimeId = (UUID) getArguments().getSerializable(AGR_CRIME_ID);
-        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        mCrimeLab = CrimeLab.get(getActivity());
+        mCrime = mCrimeLab.getCrime(crimeId);
     }
 
     /**
@@ -121,6 +127,29 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             // 刷新日期按钮的显示结果
             updateDate(date);
+        }
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater); // 约定:任何超类定义的菜单项在子类方法中同样获得应用
+        // 解析菜单定义,将菜单项填充到menu对象中
+        inflater.inflate(R.menu.fragment_crime,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getActivity().finish();
+                return true;
+            case R.id.menu_item_delete_crime:
+                // 调用crimeLab的delete(UUID crimeId)方法,删除当前的crime
+                mCrimeLab.deleteCrime(mCrime.getId());
+                // 关闭crimeFragment的托管方activity
+                getActivity().finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
