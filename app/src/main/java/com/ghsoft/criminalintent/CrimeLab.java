@@ -1,6 +1,9 @@
 package com.ghsoft.criminalintent;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.ghsoft.criminalintent.database.CrimeBaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,8 @@ import java.util.UUID;
 public class CrimeLab {
     private static CrimeLab sCrimeLab; // 以s为前缀的此变量说明该变量为静态变量
     private List<Crime> mCrimes;
+    private Context mContext;
+    private SQLiteDatabase mDatabase;
     public static CrimeLab get(Context ctx){
         if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(ctx);
@@ -20,6 +25,8 @@ public class CrimeLab {
         return sCrimeLab;
     }
     private CrimeLab(Context ctx){
+        mContext = ctx.getApplicationContext();
+        mDatabase = new CrimeBaseHelper(mContext).getWritableDatabase();
         mCrimes = new ArrayList<>();
     }
     public List<Crime> getCrimes(){
