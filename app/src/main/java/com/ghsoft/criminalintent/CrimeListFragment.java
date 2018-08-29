@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -28,6 +29,9 @@ public class CrimeListFragment extends Fragment {
     private CrimeAdapter mAdapter;
     private boolean mSubTitleVisible;
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+    private TextView mBtnAdd;
+    private RelativeLayout mRlcrimeEmpty;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,12 +45,19 @@ public class CrimeListFragment extends Fragment {
             , @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
         mCrimeRecyclerView = view.findViewById(R.id.crime_recycler_view);
+        mRlcrimeEmpty = view.findViewById(R.id.rl_crime_empty);
+        mBtnAdd = view.findViewById(R.id.btn_add);
+        // 1.隐藏列表界面,显示空空如也的界面
         mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         if (savedInstanceState != null) {
             mSubTitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
         }
         updateUI();
         return view;
+    }
+    private void setLayoutVisibility(boolean isVisibility){
+        mCrimeRecyclerView.setVisibility(isVisibility ? View.VISIBLE : View.GONE);
+        mRlcrimeEmpty.setVisibility(!isVisibility ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -58,6 +69,8 @@ public class CrimeListFragment extends Fragment {
     private void updateUI() {
         CrimeLab crimeLab = CrimeLab.get(getActivity());
         List<Crime> crimes = crimeLab.getCrimes();
+        boolean isCrimeEmpty = crimes.size() != 0;
+        setLayoutVisibility(isCrimeEmpty);
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
             mCrimeRecyclerView.setAdapter(mAdapter);

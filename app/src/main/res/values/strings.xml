@@ -12,6 +12,7 @@
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
     <string name="delete_crime">Delete Crime</string>
+    <string name="new_crime_hint">Click Add!</string>
     <!-- 量化字符串 - 子标题区分显示crime数量
          https://blog.csdn.net/teagreen_red/article/details/78269950
     -->
