@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ghsoft.criminalintent.database.CrimeBaseHelper;
+import com.ghsoft.criminalintent.database.CrimeCursorWrapper;
 import com.ghsoft.criminalintent.database.CrimeDbSchema;
 import com.ghsoft.criminalintent.database.CrimeDbSchema.CrimeTable;
 
@@ -40,7 +41,21 @@ public class CrimeLab {
         return values;
     }
     public List<Crime> getCrimes(){
-        return new ArrayList<>();
+        ArrayList<Crime> crimes = new ArrayList<>();
+        // 查询获取封装了crimeCursor的对象
+        CrimeCursorWrapper cursor = queryCrimes(null, null);
+        // 遍历cursor获取每一个节点对应的crime并将其添加到list中
+        try {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+        }finally {
+            // 别忘了!轻则导致应用报错,重则导致应用崩溃!
+            cursor.close();
+        }
+        return crimes;
     }
 
     /**
@@ -82,7 +97,7 @@ public class CrimeLab {
      * @param whereArgs 条件填充参数数组
      * @return 查询结果集
      */
-    private Cursor queryCrimes(String whereClause,String[] whereArgs){
+    private CrimeCursorWrapper queryCrimes(String whereClause, String[] whereArgs){
         Cursor cursor = mDatabase.query(
                 CrimeTable.NAME,
                 null, // Columns - null selects all columns
@@ -92,6 +107,6 @@ public class CrimeLab {
                 null,
                 null
         );
-        return cursor;
+        return new CrimeCursorWrapper(cursor);
     }
 }
