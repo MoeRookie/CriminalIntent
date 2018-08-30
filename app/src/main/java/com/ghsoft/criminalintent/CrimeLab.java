@@ -2,6 +2,7 @@ package com.ghsoft.criminalintent;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ghsoft.criminalintent.database.CrimeBaseHelper;
@@ -59,6 +60,11 @@ public class CrimeLab {
         ContentValues values = getContentValues(crime);
         mDatabase.insert(CrimeTable.NAME,null,values);
     }
+
+    /**
+     * 更新crime记录到数据库
+     * @param crime crime记录
+     */
     public void updateCrime(Crime crime){
         String uuidString = crime.getId().toString();
         ContentValues values = getContentValues(crime);
@@ -68,5 +74,17 @@ public class CrimeLab {
     }
 
     public void deleteCrime(UUID crimeId){
+    }
+    private Cursor queryCrimes(String whereClause,String[] whereArgs){
+        Cursor cursor = mDatabase.query(
+                CrimeTable.NAME,
+                null, // Columns - null selects all columns
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+        return cursor;
     }
 }
