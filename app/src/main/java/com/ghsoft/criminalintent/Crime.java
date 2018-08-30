@@ -13,8 +13,11 @@ public class Crime {
     private Date mDate; // 陋习发生的时间
     private boolean mSolved; // 陋习的处理状态
     public Crime(){
+        this(UUID.randomUUID());
+    }
+    public Crime(UUID id){
         // 生成唯一标识符
-        mId = UUID.randomUUID();
+        mId = id;
         mDate = new Date(); // 陋习的发生时间默认为当前时间
     }
 

@@ -75,6 +75,13 @@ public class CrimeLab {
 
     public void deleteCrime(UUID crimeId){
     }
+
+    /**
+     * 从数据库中查询crime记录
+     * @param whereClause 条件语句
+     * @param whereArgs 条件填充参数数组
+     * @return 查询结果集
+     */
     private Cursor queryCrimes(String whereClause,String[] whereArgs){
         Cursor cursor = mDatabase.query(
                 CrimeTable.NAME,
