@@ -50,8 +50,23 @@ public class CrimeLab {
     public Crime getCrime(UUID id){
         return null;
     }
+
+    /**
+     * 添加crime记录到数据库
+     * @param crime crime记录
+     */
     public void addCrime(Crime crime){
+        ContentValues values = getContentValues(crime);
+        mDatabase.insert(CrimeTable.NAME,null,values);
     }
+    public void updateCrime(Crime crime){
+        String uuidString = crime.getId().toString();
+        ContentValues values = getContentValues(crime);
+        mDatabase.update(CrimeTable.NAME,values,
+                CrimeTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
+    }
+
     public void deleteCrime(UUID crimeId){
     }
 }
