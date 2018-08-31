@@ -122,6 +122,27 @@ public class CrimeFragment extends Fragment {
         CharSequence currentDate = DateFormat.format("EEEE,MMMMdd,yyyy", date);
         mDateButton.setText(currentDate);
     }
+    private String getCrimeReport(){
+        String solvedString =
+                mCrime.isSolved()
+                        ?
+                        getString(R.string.crime_report_solved)
+                        :
+                        getString(R.string.crime_report_unsolved);
+        String dateFormat = "EEE, MMM dd";
+        String dateString = DateFormat.format(dateFormat, mCrime.getDate()).toString();
+        String suspect = mCrime.getSuspect() == null
+                ?
+                getString(R.string.crime_report_no_suspect)
+                :
+                getString(R.string.crime_report_suspect,mCrime.getSuspect());
+        String report = getString(R.string.crime_report,
+                mCrime.getTitle(),
+                dateString,
+                solvedString,
+                suspect);
+        return report;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
