@@ -2,6 +2,8 @@ package com.ghsoft.criminalintent;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
@@ -184,6 +186,26 @@ public class CrimeFragment extends Fragment {
             mCrime.setDate(date);
             // 刷新日期按钮的显示结果
             updateDate(date);
+        } else if (requestCode == REQUEST_CONTACT && data != null) {
+            Uri contactUri = data.getData();
+            // 指定需要返回其值的字段
+            String[] queryFields = {ContactsContract.Contacts.DISPLAY_NAME};
+            // 查询,contactUri类似这里的where条件
+            Cursor cursor = getActivity().getContentResolver()
+                    .query(contactUri, queryFields, null, null, null);
+            try {
+                // 检查是否真正的获取到了结果
+                if (cursor.getCount() == 0) {
+                    return;
+                }
+                // 获取到第一条记录的第一个字段值即为嫌疑人姓名
+                cursor.moveToFirst();
+                String suspect = cursor.getString(0);
+                mCrime.setSuspect(suspect);
+                mSuspectButton.setText(suspect);
+            }finally {
+                cursor.close();
+            }
         }
     }
     @Override
