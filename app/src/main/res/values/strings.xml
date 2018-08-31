@@ -5,13 +5,17 @@
     <string name="crime_title_label">Title</string>
     <string name="crime_details_label">Details</string>
     <string name="crime_solved_label">Solved</string>
+    <string name="delete_crime">Delete Crime</string>
     <!-- 日期对话框标题 -->
     <string name="date_picker_title">Date of crime.</string>
+    <!-- 打开选取嫌疑人应用、打开发送消息的应用 -->
+    <string name="crime_suspect_text">CHOOSE SUSPECT</string>
+    <string name="crime_report_text">SEND CRIME REPORT</string>
+    <!-- CrimeListFragment界面 -->
     <!-- 菜单及菜单项所需的字符串资源 -->
     <string name="new_crime">New Crime</string>
     <string name="show_subtitle">Show Subtitle</string>
     <string name="hide_subtitle">Hide Subtitle</string>
-    <string name="delete_crime">Delete Crime</string>
     <string name="new_crime_hint">Click Add!</string>
     <!-- 量化字符串 - 子标题区分显示crime数量
          https://blog.csdn.net/teagreen_red/article/details/78269950
