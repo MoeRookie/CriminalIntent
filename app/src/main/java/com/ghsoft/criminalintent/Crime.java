@@ -13,6 +13,7 @@ public class Crime {
     private Date mDate; // 陋习发生的时间
     private boolean mSolved; // 陋习的处理状态
     private String mSuspect; // 嫌疑人姓名
+    private String mPhoneNumber; // 嫌疑人电话号码
     public Crime(){
         this(UUID.randomUUID());
     }
@@ -52,6 +53,14 @@ public class Crime {
 
     public String getSuspect() {
         return mSuspect;
+    }
+
+    public String getPhoneNumber() {
+        return mPhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        mPhoneNumber = phoneNumber;
     }
 
     public void setSuspect(String suspect) {
