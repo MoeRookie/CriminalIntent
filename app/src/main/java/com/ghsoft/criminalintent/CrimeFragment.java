@@ -44,6 +44,7 @@ public class CrimeFragment extends Fragment {
     private CrimeLab mCrimeLab;
     private Button mReportButton;
     private Button mSuspectButton;
+    private Button mCallSuspectButton;
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle bundle = new Bundle();
@@ -148,11 +149,7 @@ public class CrimeFragment extends Fragment {
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         // pickContact.addCategory(Intent.CATEGORY_HOME); 验证过滤器
         // 检查可响应任务的activity
-        PackageManager packageManager = getActivity().getPackageManager();
-        if (packageManager.resolveActivity(pickContact,
-                PackageManager.MATCH_DEFAULT_ONLY) == null) {
-            mSuspectButton.setEnabled(false);
-        }
+        checkCanHandleCurrentTaskActivity(pickContact,mSuspectButton);
         mSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +159,30 @@ public class CrimeFragment extends Fragment {
         if (mCrime.getSuspect() != null) {
             mSuspectButton.setText(mCrime.getSuspect());
         }
+        mCallSuspectButton = view.findViewById(R.id.crime_call);
+        // 创建拨打电话的隐式intent
+        final Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:15163605898"));
+        checkCanHandleCurrentTaskActivity(callPhone,mCallSuspectButton);
+        mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(callPhone);
+            }
+        });
         return view;
+    }
+
+    /**
+     * 检查当前设备中是否存在能够处理当前任务的activity,如果不存在则设置启动目标应用的按钮无效
+     * @param intent 封装定义了当前任务的intent
+     * @param button 启动目标应用的button
+     */
+    private void checkCanHandleCurrentTaskActivity(Intent intent, Button button) {
+        PackageManager packageManager = getActivity().getPackageManager();
+        if (packageManager.resolveActivity(intent,
+                PackageManager.MATCH_DEFAULT_ONLY) == null) {
+            button.setEnabled(false);
+        }
     }
 
     private void updateDate(Date date) {

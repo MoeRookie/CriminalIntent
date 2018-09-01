@@ -14,12 +14,15 @@
     <string name="crime_report">%1$s!
         The crime was discovered on %2$s. %3$s, and %4$s
     </string>
+    <!-- 用于拼接短信内容的字符串资源 -->
     <string name="crime_report_solved">The case is solved.</string>
     <string name="crime_report_unsolved">The case is not solved.</string>
     <string name="crime_report_no_suspect">there is no suspect.</string>
     <string name="crime_report_suspect">the suspect is %s.</string>
     <string name="crime_report_subject">CriminalIntent Crime Report.</string>
     <string name="send_report">Send crime report via</string>
+    <!-- 打开拨打电话的应用 -->
+    <string name="crime_suspect_call_text">CALL SUSPECT</string>
     <!-- CrimeListFragment界面 -->
     <!-- 菜单及菜单项所需的字符串资源 -->
     <string name="new_crime">New Crime</string>
