@@ -128,18 +128,25 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // 创建发送消息的隐式intent
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
-                intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.crime_report_subject));
-                intent = Intent.createChooser(intent,getString(R.string.send_report));
-                startActivity(intent);
+                ShareCompat.IntentBuilder sc = ShareCompat.IntentBuilder.from(getActivity());
+                sc.setType("text/plain");
+                sc.setText(getCrimeReport());
+                sc.setSubject(getString(R.string.crime_report_subject));
+                sc.createChooserIntent();
+                sc.startChooser();
+                // 创建发送消息的隐式intent
+                // Intent intent = new Intent(Intent.ACTION_SEND);
+                // intent.setType("text/plain");
+                // intent.putExtra(Intent.EXTRA_TEXT,getCrimeReport());
+                // intent.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.crime_report_subject));
+                // intent = Intent.createChooser(intent,getString(R.string.send_report));
+                // startActivity(intent);
             }
         });
         mSuspectButton = view.findViewById(R.id.crime_suspect);
         // 创建打开联系人列表的intent
         final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        // pickContact.addCategory(Intent.CATEGORY_HOME);
+        // pickContact.addCategory(Intent.CATEGORY_HOME); 验证过滤器
         // 检查可响应任务的activity
         PackageManager packageManager = getActivity().getPackageManager();
         if (packageManager.resolveActivity(pickContact,
