@@ -164,11 +164,12 @@ public class CrimeFragment extends Fragment {
         }
         mCallSuspectButton = view.findViewById(R.id.crime_call);
         // 创建拨打电话的隐式intent
-        final Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mCrime.getPhoneNumber()));
+        Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"));
         checkCanHandleCurrentTaskActivity(callPhone,mCallSuspectButton);
         mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mCrime.getPhoneNumber()));
                 startActivity(callPhone);
             }
         });
