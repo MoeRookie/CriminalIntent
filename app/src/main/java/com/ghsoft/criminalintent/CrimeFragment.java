@@ -6,7 +6,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.provider.ContactsContract.Contacts;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.support.v4.app.ShareCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +35,7 @@ import java.util.UUID;
  */
 
 public class CrimeFragment extends Fragment {
+    private static final String TAG = CrimeFragment.class.getSimpleName();
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
@@ -146,7 +149,7 @@ public class CrimeFragment extends Fragment {
         });
         mSuspectButton = view.findViewById(R.id.crime_suspect);
         // 创建打开联系人列表的intent
-        final Intent pickContact = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        final Intent pickContact = new Intent(Intent.ACTION_PICK, Contacts.CONTENT_URI);
         // pickContact.addCategory(Intent.CATEGORY_HOME); 验证过滤器
         // 检查可响应任务的activity
         checkCanHandleCurrentTaskActivity(pickContact,mSuspectButton);
@@ -161,7 +164,7 @@ public class CrimeFragment extends Fragment {
         }
         mCallSuspectButton = view.findViewById(R.id.crime_call);
         // 创建拨打电话的隐式intent
-        final Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:15163605898"));
+        final Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mCrime.getPhoneNumber()));
         checkCanHandleCurrentTaskActivity(callPhone,mCallSuspectButton);
         mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,7 +228,10 @@ public class CrimeFragment extends Fragment {
         } else if (requestCode == REQUEST_CONTACT && data != null) {
             Uri contactUri = data.getData();
             // 指定需要返回其值的字段
-            String[] queryFields = {ContactsContract.Contacts.DISPLAY_NAME};
+            String[] queryFields = {
+                    Contacts.DISPLAY_NAME,
+                    Contacts._ID
+            };
             // 查询,contactUri类似这里的where条件
             Cursor cursor = getActivity().getContentResolver()
                     .query(contactUri, queryFields, null, null, null);
@@ -238,12 +244,45 @@ public class CrimeFragment extends Fragment {
                 cursor.moveToFirst();
                 String suspect = cursor.getString(0);
                 mCrime.setSuspect(suspect);
+                String suspectId = cursor.getString(1);
+                Log.e(TAG, "姓名:" + suspect + ",ID:" + suspectId);
+                String phoneNumber = getPhoneNumberById(suspectId);
+                mCrime.setPhoneNumber(phoneNumber);
                 mSuspectButton.setText(suspect);
             }finally {
                 cursor.close();
             }
         }
     }
+
+    /**
+     * 根据suspectId从CommonDataKinds.Phone表中查询当前嫌疑人的电话号码
+     * @param suspectId 联系人ID
+     * @return 联系人电话号码
+     */
+    private String getPhoneNumberById(String suspectId) {
+        Cursor cursor = getActivity().getContentResolver()
+                .query(Phone.CONTENT_URI,
+                        new String[]{Phone.NUMBER},
+                        Phone.CONTACT_ID + "= ?",
+                        new String[]{suspectId},
+                        null);
+        String phoneNumber = null;
+        try{
+            // 检查是否真正的获取到了结果
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+            // 获取到第一条记录的第一个字段值即为嫌疑人电话号码
+            cursor.moveToFirst();
+            phoneNumber = cursor.getString(0);
+            Log.e(TAG, "phoneNumber = " + phoneNumber);
+        }finally {
+            cursor.close();
+        }
+        return phoneNumber;
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater); // 约定:任何超类定义的菜单项在子类方法中同样获得应用
