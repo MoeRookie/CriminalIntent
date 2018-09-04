@@ -28,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,6 +39,7 @@ import java.util.UUID;
 public class CrimeFragment extends Fragment {
     private static final String TAG = CrimeFragment.class.getSimpleName();
     private Crime mCrime;
+    private File mPhotoFile;
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
@@ -67,6 +69,8 @@ public class CrimeFragment extends Fragment {
         UUID crimeId = (UUID) getArguments().getSerializable(AGR_CRIME_ID);
         mCrimeLab = CrimeLab.get(getActivity());
         mCrime = mCrimeLab.getCrime(crimeId);
+        mPhotoFile = CrimeLab.get(getActivity())
+                .getPhotoFile(mCrime);
     }
 
     @Override
