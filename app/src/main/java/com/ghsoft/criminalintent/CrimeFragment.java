@@ -48,6 +48,7 @@ public class CrimeFragment extends Fragment {
     private CheckBox mSolvedCheckBox;
     private static final String AGR_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
+    private static final String DIALOG_PICTURE_DETAIL = "DialogPictureDetail";
     private static final int REQUEST_DATE = 0;
     private static final int REQUEST_CONTACT = 1;
     private static final int REQUEST_PHOTO = 2;
@@ -206,6 +207,19 @@ public class CrimeFragment extends Fragment {
         });
         mPhotoView = view.findViewById(R.id.crime_photo);
         updatePhotoView();
+        mPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 弹出显示放大版缩略图的对话框
+                FragmentManager manager = getFragmentManager();
+                // 获取缩略图位图对象
+                Bitmap bitmap = PictureUtils.getScaledBitmap(
+                        mPhotoFile.getPath(), getActivity()
+                );
+                PictureDetailFragment dialog = PictureDetailFragment.newInstance(bitmap);
+                dialog.show(manager,DIALOG_PICTURE_DETAIL);
+            }
+        });
         return view;
     }
 

@@ -6,6 +6,8 @@
     <string name="crime_details_label">Details</string>
     <string name="crime_solved_label">Solved</string>
     <string name="delete_crime">Delete Crime</string>
+    <!-- 缩略图对话框标题 -->
+    <string name="picture_title">Crime picture details.</string>
     <!-- 日期对话框标题 -->
     <string name="date_picker_title">Date of crime.</string>
     <!-- 打开选取嫌疑人应用、打开发送消息的应用 -->
