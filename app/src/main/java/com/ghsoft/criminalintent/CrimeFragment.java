@@ -24,6 +24,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -58,6 +59,8 @@ public class CrimeFragment extends Fragment {
     private Button mCallSuspectButton;
     private ImageButton mPhotoButton;
     private ImageView mPhotoView;
+    private int mPhotoViewWidth;
+    private int mPhotoViewHeight;
 
     public static CrimeFragment newInstance(UUID crimeId){
         Bundle bundle = new Bundle();
@@ -206,7 +209,18 @@ public class CrimeFragment extends Fragment {
             }
         });
         mPhotoView = view.findViewById(R.id.crime_photo);
-        updatePhotoView();
+        // 获取mPhotoView的观察者对象以及mPhotoView的宽高值
+        ViewTreeObserver observer = mPhotoView.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // 获取mPhotoView的宽高
+                mPhotoViewWidth = mPhotoView.getWidth();
+                mPhotoViewHeight = mPhotoView.getHeight();
+                // 更新照片显示
+                updatePhotoView(mPhotoViewWidth,mPhotoViewHeight);
+            }
+        });
         mPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,12 +275,13 @@ public class CrimeFragment extends Fragment {
                 suspect);
         return report;
     }
-    private void updatePhotoView(){
+
+    private void updatePhotoView(int width,int height){
         if (mPhotoFile == null || !mPhotoFile.exists()) {
             mPhotoView.setImageDrawable(null);
         }else{
             Bitmap bitmap = PictureUtils.getScaledBitmap(
-                    mPhotoFile.getPath(), getActivity()
+                    mPhotoFile.getPath(), width,height
             );
             mPhotoView.setImageBitmap(bitmap);
         }
@@ -311,7 +326,7 @@ public class CrimeFragment extends Fragment {
                 cursor.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
-            updatePhotoView();
+            updatePhotoView(mPhotoViewWidth,mPhotoViewHeight);
         }
     }
 
