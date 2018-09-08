@@ -65,7 +65,12 @@ public class CrimeListFragment extends Fragment {
         mBtnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNewCrime();
+                // 新建crime保存到陋习列表中,并在陋习详情中设置新建crime的属性
+                Crime crime = new Crime();
+                CrimeLab crimeLab = CrimeLab.get(getActivity());
+                crimeLab.addCrime(crime);
+                updateUI();
+                mCallbacks.onCrimeSelected(crime);
             }
         });
         // 1.隐藏列表界面,显示空空如也的界面
@@ -115,7 +120,12 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_new_crime:
-                goToNewCrime();
+                // 新建crime保存到陋习列表中,并在陋习详情中设置新建crime的属性
+                Crime crime = new Crime();
+                CrimeLab crimeLab = CrimeLab.get(getActivity());
+                crimeLab.addCrime(crime);
+                updateUI();
+                mCallbacks.onCrimeSelected(crime);
                 return true; // 全部任务已完成
             case R.id.menu_item_show_subtitle:
                 // 子标题显示与否的状态值取反
@@ -128,16 +138,6 @@ public class CrimeListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    private void goToNewCrime() {
-        // 新建crime保存到陋习列表中,并在陋习详情中设置新建crime的属性
-        Crime crime = new Crime();
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        crimeLab.addCrime(crime);
-        // 跳转CrimePagerActivity
-        Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
-        startActivity(intent);
     }
 
     /**
@@ -175,9 +175,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            // 启动CrimeActivity实例
-            Intent intent = CrimePagerActivity.newIntent(getActivity(),mCrime.getId());
-            startActivity(intent);
+            mCallbacks.onCrimeSelected(mCrime);
         }
 
         /**
