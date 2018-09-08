@@ -8,7 +8,8 @@ import android.support.v4.app.Fragment;
  */
 
 public class CrimeListActivity extends SingleFragmentActivity
-implements CrimeListFragment.Callbacks{
+implements CrimeListFragment.Callbacks
+        ,CrimeFragment.Callbacks{
     @Override
     protected Fragment createFragment() {
         return new CrimeListFragment();
@@ -38,5 +39,18 @@ implements CrimeListFragment.Callbacks{
                     .replace(R.id.detail_fragment_container,newDetail)
                     .commit();
         }
+    }
+
+    /**
+     * 当前crime更新时回调
+     * @param crime 当前crime
+     */
+    @Override
+    public void onCrimeUpdated(Crime crime) {
+        // 重新加载crime列表,刷新adapter显示
+        CrimeListFragment listFragment = (CrimeListFragment)
+                getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container);
+        listFragment.updateUI();
     }
 }

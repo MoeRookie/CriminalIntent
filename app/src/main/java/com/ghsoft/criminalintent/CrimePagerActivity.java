@@ -20,7 +20,8 @@ import java.util.UUID;
  * Created by mac on 2018/8/8.
  */
 
-public class CrimePagerActivity extends AppCompatActivity {
+public class CrimePagerActivity extends AppCompatActivity
+implements CrimeFragment.Callbacks{
 
     private static final String EXTRA_CRIME_ID = "com.ghsoft.criminalintent.crime_id";
     private ViewPager mViewPager;
@@ -57,5 +58,9 @@ public class CrimePagerActivity extends AppCompatActivity {
                 mViewPager.setCurrentItem(i);
             }
         }
+    }
+
+    @Override
+    public void onCrimeUpdated(Crime crime) {
     }
 }
