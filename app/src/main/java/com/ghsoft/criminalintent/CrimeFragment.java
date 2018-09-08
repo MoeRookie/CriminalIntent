@@ -127,6 +127,8 @@ public class CrimeFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 // s:用户输入内容,.toString()返回用来设置Crime标题的字符串.
                 mCrime.setTitle(s.toString());
+                // 通知activity更新crime列表界面
+                updateCrime();
             }
 
             @Override
@@ -154,6 +156,8 @@ public class CrimeFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // 更新陋习的处理状态
                 mCrime.setSolved(isChecked);
+                // 通知activity更新crime列表界面
+                updateCrime();
             }
         });
         mReportButton = view.findViewById(R.id.crime_report);
@@ -342,6 +346,14 @@ public class CrimeFragment extends Fragment {
         } else if (requestCode == REQUEST_PHOTO) {
             updatePhotoView(mPhotoViewWidth,mPhotoViewHeight);
         }
+    }
+
+    private void updateCrime(){
+        // 更新CrimeLab数据库中的crime数据
+        CrimeLab.get(getActivity())
+                .updateCrime(mCrime);
+        // 调用onCrimeUpdated(Crime)方法以更新crime列表界面
+        mCallbacks.onCrimeUpdated(mCrime);
     }
 
     /**
