@@ -314,6 +314,7 @@ public class CrimeFragment extends Fragment {
             Date date = (Date) data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
             // 设置crime的记录日期
             mCrime.setDate(date);
+            updateCrime();
             // 刷新日期按钮的显示结果
             updateDate(date);
         } else if (requestCode == REQUEST_CONTACT && data != null) {
@@ -339,11 +340,13 @@ public class CrimeFragment extends Fragment {
                 Log.e(TAG, "姓名:" + suspect + ",ID:" + suspectId);
                 String phoneNumber = getPhoneNumberById(suspectId);
                 mCrime.setPhoneNumber(phoneNumber);
+                updateCrime();
                 mSuspectButton.setText(suspect);
             }finally {
                 cursor.close();
             }
         } else if (requestCode == REQUEST_PHOTO) {
+            updateCrime();
             updatePhotoView(mPhotoViewWidth,mPhotoViewHeight);
         }
     }
